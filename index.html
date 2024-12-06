@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Three.js</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div class="sliders">
+      <div class="slider">
+        <label for="range">FOV: </label>
+        <input type="range" id="range" min="0" max="180" />
+      </div>
+      <div class="slider">
+        <label for="posX">X-Position</label>
+        <input type="range" id="posX" />
+      </div>
+      <div class="slider">
+        <label for="posY">Y-Position</label>
+        <input type="range" id="posY" />
+      </div>
+      <div class="slider">
+        <label for="posZ">Z-Position</label>
+        <input type="range" id="posZ" />
+      </div>
+    </div>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

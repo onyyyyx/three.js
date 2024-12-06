@@ -1,0 +1,21 @@
+body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sliders {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.slider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  width: fit-content;
+  margin: 0 auto;
+  padding: 20px
+}
