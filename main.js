@@ -20,7 +20,7 @@ function makeInstance(dims, position, rotation, type, color) {
   const shape = new THREE.Mesh(new SHAPE_TYPES[type](...dims), material);
   scene.add(shape);
   const geometry = new THREE.EdgesGeometry(new SHAPE_TYPES[type](...dims));
-  scene.add(geometry)
+  // scene.add(geometry)
 
   shape.position.set(...position);
   shape.rotation.set(...rotation);
