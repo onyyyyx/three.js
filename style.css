@@ -2,20 +2,25 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  background-color: black;
+  font-family: "Montserrat", sans-serif;
 }
 
 .sliders {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+  color: white;
 }
 
 .slider {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.4);
-  width: fit-content;
+  width: 300px;
   margin: 0 auto;
-  padding: 20px
+  padding: 20px;
+  border: 2px whitesmoke solid;
+  border-radius: 40px;
 }
