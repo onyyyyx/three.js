@@ -1,66 +1,76 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-function makeInstance(dims, position, rotation, type, color) {
-  const SHAPE_TYPES = [
-    THREE.BoxGeometry,
-    THREE.CircleGeometry,
-    THREE.ConeGeometry,
-    THREE.CylinderGeometry,
-    THREE.DodecahedronGeometry,
-    THREE.IcosahedronGeometry,
-    THREE.OctahedronGeometry,
-    THREE.PlaneGeometry,
-    THREE.SphereGeometry,
-    THREE.TetrahedronGeometry,
-  ];
-
-  const material = new THREE.MeshPhongMaterial({ color });
-
-  const shape = new THREE.Mesh(new SHAPE_TYPES[type](...dims), material);
-  scene.add(shape);
-  const geometry = new THREE.EdgesGeometry(new SHAPE_TYPES[type](...dims));
-  // scene.add(geometry)
-
-  shape.position.set(...position);
-  shape.rotation.set(...rotation);
-
-  return shape;
-}
-
-const pi = Math.PI;
-
 const canvas = document.querySelector("#c");
 const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
-
-const fov = 75;
-const aspect = 2;
-const near = 0.01;
-const far = 15;
-
 const camera = new THREE.PerspectiveCamera(
-  fov,
-  window.innerWidth / window.innerHeight,
-  near,
-  far
+  62,
+  window.innerWidth / window.screen.height,
+  0.1,
+  1000
 );
-camera.position.z = 2;
-camera.position.y = 0.25;
 const scene = new THREE.Scene();
 const controls = new OrbitControls(camera, renderer.domElement);
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(window.innerWidth, window.screen.height);
+camera.position.set(0, 50, 0);
+camera.up.set(0, 0, 1);
+camera.lookAt(0, 0, 0);
 
-const shapes = [
-  makeInstance([1, 1, 1], [0, 0, 0], [0, 0, 0], 0, 0x44aa88),
-  makeInstance([0.5, 2, 100], [0, 0.5, 0], [0, 0, pi / 4], 2, 0xff0000),
-];
+// Main data
+const objects = [];
+const sphere = new THREE.SphereGeometry(1); //, 10, 10);
 
-const light = new THREE.DirectionalLight(0xffffff, 3);
-light.position.set(-1, 1, 4);
+const solarSystem = new THREE.Object3D();
+scene.add(solarSystem);
+objects.push(solarSystem);
+
+const sunMaterial = new THREE.MeshPhongMaterial({ emissive: 0xffff00 });
+const sunMesh = new THREE.Mesh(sphere, sunMaterial);
+sunMesh.scale.set(5, 5, 5);
+solarSystem.add(sunMesh);
+objects.push(sunMesh);
+console.log(objects, scene);
+
+const light = new THREE.PointLight(0xffffff, 100);
 scene.add(light);
+
+const earthOrbit = new THREE.Object3D();
+earthOrbit.position.x = 10;
+solarSystem.add(earthOrbit);
+objects.push(earthOrbit);
+
+const earthMaterial = new THREE.MeshPhongMaterial({
+  color: 0x2233ff,
+  emissive: 0x112244,
+});
+const earthMesh = new THREE.Mesh(sphere, earthMaterial);
+earthOrbit.add(earthMesh);
+objects.push(earthMesh);
+
+const moonOrbit = new THREE.Object3D();
+moonOrbit.position.x = 2;
+earthOrbit.add(moonOrbit);
+
+const moonMaterial = new THREE.MeshPhongMaterial({
+  color: 0x888888,
+  emissive: 0x222222,
+});
+const moonMesh = new THREE.Mesh(sphere, moonMaterial);
+moonMesh.scale.set(0.5, 0.5, 0.5);
+moonOrbit.add(moonMesh);
+objects.push(moonMesh);
 
 function render(time) {
   time *= 0.001; // ms => s
+
+  objects.forEach((obj) => {
+    obj.rotation.y = time;
+    
+    const axes = new THREE.AxesHelper();
+    axes.material.depthTest = false;
+    axes.renderOrder = 1;
+    obj.add(axes);
+  });
 
   renderer.render(scene, camera);
   controls.update();
